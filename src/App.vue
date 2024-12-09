@@ -43,6 +43,7 @@
 export default {
   data() {
     return {
+      message: null,
       forEveryones : process.env.VUE_APP_FOR_EVERYONES || "Not set",
       apiUrl: process.env.VUE_APP_API_URL || "Not set",
       secretKey: process.env.VUE_APP_SUPER_SECRET_KEY || "Not set",
@@ -55,6 +56,10 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.message = data.message;
+        })
+        .catch((error) => {
+          console.error("Error fetching the backend resource:", error);
+          this.message = "Error loading message.";
         });
   },
 };
