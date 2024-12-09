@@ -22,11 +22,20 @@
           <td>{{ secretKey }}</td>
         </tr>
         <tr>
-          <td>VUE_PROD_SECRET</td>
+          <td>VUE_APP_PROD_SECRET</td>
           <td>{{ prodSecret }}</td>
+        </tr>
+        <tr>
+          <td>VUE_APP_GITHUB_SECRET</td>
+          <td>{{ githubSecret }}</td>
         </tr>
       </tbody>
     </table>
+    <div>
+      <h2>Message from Backend</h2>
+      <p v-if="message">{{ message }}</p>
+      <p v-else>Loading...</p>
+    </div>
   </div>
 </template>
 
@@ -38,7 +47,15 @@ export default {
       apiUrl: process.env.VUE_APP_API_URL || "Not set",
       secretKey: process.env.VUE_APP_SUPER_SECRET_KEY || "Not set",
       prodSecret: process.env.VUE_APP_PROD_SECRET || "Not set",
+      githubSecret: process.env.VUE_APP_GITHUB_SECRET || "Not set",
     };
+  },
+  mounted() {
+    fetch(`${process.env.VUE_APP_BACKEND_URL}/api/hello`)
+        .then((response) => response.json())
+        .then((data) => {
+          this.message = data.message;
+        });
   },
 };
 </script>
